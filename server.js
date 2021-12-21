@@ -7,6 +7,12 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: false }));
 var fs = require("fs");
 
+let blogs = [];
+fs.readFile(__dirname + "/" + "blogs.json", "utf8", function (err, data) {
+  blogs = JSON.parse(data);
+
+  // console.log(blogs);
+});
 // var user = {
 //   user4: {
 //     name: "mohit",
@@ -17,12 +23,13 @@ var fs = require("fs");
 // };
 app.get("/blogs", function (req, res) {
   // First read existing users.
-  fs.readFile(__dirname + "/" + "blogs.json", "utf8", function (err, data) {
-    var blogs = JSON.parse(data);
+  // fs.readFile(__dirname + "/" + "blogs.json", "utf8", function (err, data) {
+  //   var blogs = JSON.parse(data);
 
-    // console.log(blogs);
-    res.end(JSON.stringify(blogs));
-  });
+  //   // console.log(blogs);
+
+  // });
+  res.end(JSON.stringify(blogs));
 });
 app.get("/blogs/:id", function (req, res) {
   // First read existing users.
@@ -34,18 +41,18 @@ app.get("/blogs/:id", function (req, res) {
   });
 });
 app.post("/blogs", function (req, res) {
-  
   // First read existing users.
-  fs.readFile(__dirname + "/" + "blogs.json", "utf8", function (err, data) {
-    data = JSON.parse(data);
-    // console.log("body", req.body);
-    data.push({
-      ...req.body,
-      id: data[data.length - 1] + 1,
-    });
-    console.log(data);
-    res.end(JSON.stringify(data));
+  // fs.readFile(__dirname + "/" + "blogs.json", "utf8", function (err, data) {
+  //   data = JSON.parse(data);
+  //   // console.log("body", req.body);
+
+  // });
+  blogs.push({
+    ...req.body,
+    id: blogs[blogs.length - 1].id + 1,
   });
+
+  res.end(JSON.stringify(blogs));
 });
 app.put("/blogs/:id", function (req, res) {
   // First read existing users.
